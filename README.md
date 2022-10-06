@@ -1,3 +1,71 @@
+# Tested by KiokAHn
+##  Environment
+- MS Windows 10 Pro    
+- Python 3.10.7    
+- PyTorch 1.12    
+- torchvision 0.13.1    
+- torchaudio 0.12.1    
+- CUDA 11.6    
+
+## Make Python Virtual Environment
+```
+cd tiny-faces-pytorch
+python -m venv ./venv
+.\venv\Script\activate.bat
+```
+
+## Install PyTorch   
+```
+pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
+pip install -r requirements.txt
+```
+
+## WIDER Face dataset
+
+[Download WIDER Face dataset](http://shuoyang1213.me/WIDERFACE]    
+
+
+## Octave for Evaluation
+
+[eval_tools Download](http://shuoyang1213.me/WIDERFACE/support/eval_script/eval_tools.zip)    
+[Octave Download](https://octave.org/download.html#ms-windows)    
+
+### Modified code for Octave        
+- plot_pr.m    
+Reference : https://docs.octave.org/v7.2.0/Figure-Properties.html    
+```
+%figure1 = figure('PaperSize',[20.98 29.68],'Color',[1 1 1], 'rend','painters','pos',[1 1 800 400]);
+figure1 = figure(1, 'papersize',[20.98 29.68],'color',[1 1 1], 'renderer','painters', 'position',[1 1 800 400]);
+```
+
+
+cli   
+.\Octave-7.2.0\cmdshell.bat
+change drive(example (e:))    
+```
+cd /e/
+```
+```
+warning: implicit conversion from numeric to char
+warning: called from
+    wider_plot at line 26 column 26
+    wider_eval at line 35 column 1
+
+Mesa: User error: GL_INVALID_VALUE in glTexImage2D(invalid width=51012 or height=25505 or depth=1)
+Mesa: User error: GL_INVALID_VALUE in glRenderbufferStorage(invalid width 51012)
+C:\DevTools\Octave-7.2.0\mingw64\bin\octave.exe: No error
+```
+
+## Training
+```
+python main.py ./wider_face_split/wider_face_train_bbx_gt.txt ./wider_face_split/wider_face_val_bbx_gt.txt --dataset-root ./data/WIDER/
+```
+
+## Evaluation
+```
+python evaluate.py ./wider_face_split/wider_face_val_bbx_gt.txt --dataset-root ./data/WIDER/ --checkpoint ./weights/checkpoint_50.pth --split val
+``` 
+
 # tiny-faces-pytorch
 
 This is a PyTorch implementation of Peiyun Hu's [awesome tiny face detector](https://github.com/peiyunh/tiny). 
